@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <div class="row" style="height: 20px;">
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    角色已有权限列表
+                    <div class="pull-right" style="margin-top: -15px">
+                        <button class="btn btn-default btn-sm navbar-btn" type="button" data-event="click add">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加权限
+                        </button>
+                        <button class="btn btn-default btn-sm navbar-btn" type="button" data-event="click cancel">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量取消
+                        </button>
+                        <button class="btn btn-default btn-sm navbar-btn" type="button" data-toggle="collapse"
+                                data-target="#query" aria-expanded="false" aria-controls="query">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询
+                        </button>
+                        <button class="btn btn-default btn-sm navbar-btn" type="button" data-event="click close">
+                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>关闭
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="collapse" id="query">
+                        <form class="well form-inline" id="roleRightSearchForm" role="form">
+                            <div class="form-group">
+                                <label for="name">权限名称：</label>
+                                <input type="text" name="name" class="form-control" id="name" style="width: 100px">
+                            </div>
+                            <div class="form-group">
+                                <label for="type" class="control-label">类型</label>
+                                <select name="type" class="form-control" id="type">
+                                    <option value="" selected>所有</option>
+                                    {{#each RIGHT_TYPE}}
+                                    <option value="{{code}}">{{label}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-info" data-event="click search">查询</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table id="roleRightGrid" rel="roleRightSearchForm"></table>
+                            <div id="roleRightGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

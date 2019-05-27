@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.role.user.RoleUserMapper">
+    <select id="query" resultType="right">
+        SELECT ID, NAME
+        FROM SYS_USER U
+        WHERE
+        <if test='own == "0"'>not</if>
+        exists(
+        SELECT 1
+        FROM SYS_USER_ROLE UR
+        WHERE U.ID = UR.USER_ID
+        AND UR.ROLE_ID = #{roleId}
+        and UR.STATUS = '0'
+        )
+        AND STATUS = '0'
+        <if test='account != null and account != ""'>
+            AND ACCOUNT LIKE CONCAT(CONCAT('%',#{account}),'%')
+        </if>
+        <if test='name != null and name != ""'>
+            AND NAME LIKE CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO SYS_USER_ROLE(USER_ID, ROLE_ID)
+        <foreach collection="userIds" item="userId" separator=" UNION ALL ">
+            SELECT #{userId}, #{roleId} FROM DUAL
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        delete from SYS_USER_ROLE where USER_ID IN(
+        <foreach collection="userIds" item="t" separator=",">
+            #{t}
+        </foreach>
+        )and ROLE_ID = #{roleId}
+    </delete>
+</mapper>

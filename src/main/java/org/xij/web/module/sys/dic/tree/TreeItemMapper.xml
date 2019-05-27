@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.dic.tree.TreeItemMapper">
+    <select id="queryChildren" resultType="treeItem">
+        select ID,
+               CODE,
+               LABEL,
+               EXT,
+               P_ID,
+               (case
+                    when exists(select 1 from SYS_DIC s where s.P_ID = d.ID)
+                        then 'true'
+                    else 'false' end) parent
+        from SYS_DIC d
+        where STATUS = '0'
+          and P_ID = #{pId}
+        order by SORT_CODE
+    </select>
+
+    <select id="queryTree" resultType="treeItem">
+        select ID,
+               CODE,
+               LABEL,
+               EXT,
+               P_ID,
+               (case
+                    when exists(select 1 from SYS_DIC s where s.P_ID = d.ID)
+                        then 'true'
+                    else 'false' end) parent
+        from SYS_DIC d
+        where STATUS = '0'
+        start with P_ID = #{pId}
+        connect by prior ID = P_ID
+        order by SORT_CODE
+    </select>
+
+    <select id="queryMenuChildren" resultType="treeItem">
+        select ID,
+               HREF                   code,
+               NAME                   label,
+               ICON,
+               TYPE                   ext,
+               P_ID,
+               (case
+                    when exists(select 1 from SYS_MENU s where s.P_ID = m.ID)
+                        then 'true'
+                    else 'false' end) parent
+        from SYS_MENU m
+        where STATUS = '0'
+          and type != '0'
+          and P_ID = #{pId}
+        order by SORT_CODE
+    </select>
+
+    <select id="queryMenuTree" resultType="treeItem">
+        select ID,
+        HREF code,
+        NAME label,
+        ICON,
+        TYPE ext,
+        P_ID,
+        (case
+        when exists(select 1 from SYS_MENU s where s.P_ID = m.ID)
+        then 'true'
+        else 'false' end) parent
+        from SYS_MENU m
+        where STATUS = '0'
+        and type != '0'
+        and (exists(
+        select 1
+        from SYS_USER_ROLE ur,
+        SYS_ROLE sr
+        where ur.USER_ID = #{USER}
+        and sr.ID = ur.ROLE_ID
+        and sr.CLASSIFY = '0000'
+        ) or exists(
+        select 1
+        from SYS_RIGHT r,
+        SYS_ROLE_RIGHT rr,
+        SYS_USER_ROLE ur
+        where r.NAME = m.ID
+        and r.TYPE = 'menu'
+        and rr.RIGHT_ID = r.ID
+        and rr.ROLE_ID = ur.ROLE_ID
+        and ur.USER_ID = #{USER}))
+        start with
+        <choose>
+            <when test='"-" != pId'>
+                P_ID = #{pId}
+            </when>
+            <otherwise>
+                exists(select 1 from SYS_APPLICATION a where a.ID = P_ID)
+            </otherwise>
+        </choose>
+        connect by prior ID = P_ID
+        order by SORT_CODE
+    </select>
+
+    <select id="queryDeptChildren" resultType="treeItem">
+        select ID,
+               CODE,
+               NAME                   label,
+               EXT,
+               P_ID,
+               (case
+                    when exists(select 1 from SYS_DEPT s where s.P_ID = d.ID)
+                        then 'true'
+                    else 'false' end) parent
+        from SYS_DEPT d
+        where STATUS = '0'
+          and P_ID = #{pId}
+        order by SORT_CODE
+    </select>
+
+    <select id="queryDeptTree" resultType="treeItem">
+        select ID,
+               CODE,
+               NAME                   label,
+               EXT,
+               P_ID,
+               (case
+                    when exists(select 1 from SYS_DEPT s where s.P_ID = d.ID)
+                        then 'true'
+                    else 'false' end) parent
+        from SYS_DEPT d
+        where STATUS = '0'
+        start with P_ID = #{pId}
+        connect by prior ID = P_ID
+        order by SORT_CODE
+    </select>
+</mapper>

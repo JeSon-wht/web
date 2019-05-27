@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.role.RoleMapper">
+    <insert id="insert">
+        INSERT INTO SYS_ROLE(ID, NAME, CLASSIFY, REMARK)
+        VALUES (#{id}, #{name}, #{classify}, #{remark})
+    </insert>
+
+    <select id="query" resultType="role">
+        SELECT ID, NAME, REMARK,STATUS
+        FROM SYS_ROLE
+        WHERE STATUS = '0'
+        <if test='name != null and name != ""'>
+            AND NAME LIKE CONCAT(CONCAT('%',#{name}),'%')
+        </if>
+        <if test='status != null and status != ""'>
+            AND STATUS LIKE CONCAT(CONCAT('%',#{status}),'%')
+        </if>
+    </select>
+
+    <update id="delete">
+        UPDATE SYS_ROLE
+        SET STATUS='1'
+        WHERE ID = #{id}
+    </update>
+
+    <select id="queryById" resultType="role">
+        SELECT ID, NAME, CLASSIFY, REMARK, STATUS
+        FROM SYS_ROLE
+        WHERE ID = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE SYS_ROLE
+        SET
+        <if test='name != null and name != ""'>
+            NAME=#{name},
+        </if>
+            CLASSIFY=#{classify}
+        <if test='remark != null and remark!= ""'>
+            ,REMARK=#{remark}
+        </if>
+        WHERE ID=#{id}
+    </update>
+
+    <select id="getRoleRightList" resultType="role">
+        SELECT RO.NAME, RO.ID
+        FROM SYS_RIGHT_OBJECT RO
+                 JOIN SYS_ROLE_RIGHT RR ON RO.ID = RR.RIGHT_ID
+        WHERE RR.ROLE_ID = #{roleId} AND RR.STATUS = '0'
+    </select>
+
+    <select id="getOtherRoleRightList" resultType="org.xij.web.module.sys.right.Right">
+        SELECT ID, NAME
+        FROM SYS_RIGHT_OBJECT
+        WHERE ID NOT IN (
+            SELECT RO.ID
+            FROM SYS_RIGHT_OBJECT RO
+                     JOIN SYS_ROLE_RIGHT RR ON RO.ID = RR.RIGHT_ID
+            WHERE RR.ROLE_ID = #{roleId}
+        )
+            AND STATUS='0'
+    </select>
+
+    <insert id="addRoleRight">
+        INSERT INTO SYS_ROLE_RIGHT(ROLE_ID,RIGHT_ID)
+        <foreach collection="rightIds" item="t" separator=" UNION ALL ">
+            SELECT #{roleId}, #{t} FROM DUAL
+        </foreach>
+    </insert>
+
+    <update id="cancelRight">
+        UPDATE SYS_ROLE_RIGHT SET STATUS='1' WHERE RIGHT_ID IN (
+        <foreach collection="rightIds" item="t" separator=", ">
+            #{t}
+        </foreach>
+        ) and ROLE_ID = #{roleId}
+    </update>
+
+    <select id="getUserList" resultType="org.xij.web.module.sys.user.User">
+        SELECT SU.NAME, SU.ID
+        FROM SYS_USER SU
+                 JOIN SYS_USER_ROLE UR ON SU.ID = UR.USER_ID
+        WHERE UR.ROLE_ID = #{roleId} AND UR.STATUS = '0'
+    </select>
+
+    <select id="getOtherUserList" resultType="org.xij.web.module.sys.user.User">
+        SELECT ID, NAME
+        FROM SYS_USER
+        WHERE ID NOT IN (
+            SELECT SU.ID
+            FROM SYS_USER SU
+                     JOIN SYS_USER_ROLE RR ON SU.ID = RR.USER_ID
+            WHERE RR.ROLE_ID = #{roleId}
+        )
+          AND STATUS='0'
+    </select>
+
+    <insert id="addRoleUser">
+        INSERT INTO SYS_USER_ROLE(ROLE_ID,USER_ID)
+        <foreach collection="userIds" item="t" separator=" UNION ALL ">
+            SELECT #{roleId}, #{t} FROM DUAL
+        </foreach>
+    </insert>
+
+    <update id="cancelUser">
+        UPDATE SYS_USER_ROLE SET STATUS='1' WHERE USER_ID IN (
+        <foreach collection="userIds" item="t" separator=", ">
+            #{t}
+        </foreach>
+        ) and ROLE_ID = #{roleId}
+    </update>
+
+    <select id="checkRepeat" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM SYS_ROLE
+        WHERE name = #{name}
+    </select>
+</mapper>

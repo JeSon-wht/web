@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.auth.AuthMapper">
+    <select id="login" resultType="user">
+        select ID,
+               ACCOUNT,
+               PASSWORD,
+               NAME,
+               EMAIL,
+               PHONE,
+               SEX,
+               FREEZE_DATE,
+               FREEZE_CAUSE,
+               DEPT_ID
+        from SYS_USER
+        where ACCOUNT = #{account}
+          and STATUS = #{STATUS_NORMAL}
+    </select>
+    <select id="queryRoleFuncRight" resultType="right">
+        select r.ID,
+               r.NAME
+        from SYS_ROLE_RIGHT rr,
+             SYS_RIGHT r
+        where rr.ROLE_ID = #{roleId}
+          and rr.RIGHT_ID = r.ID
+          and r.STATUS = #{STATUS_NORMAL}
+          and r.TYPE = 'func'
+    </select>
+</mapper>

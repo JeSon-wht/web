@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.0.10:1521:orcl
+    username: ZWFW
+    password: ffffff
+    hikari:
+      data-source-properties:
+        remarksReporting: true
+        useUnicode: true
+        useSSL: true
+        serverTimezone: GMT+8
+        characterEncoding: utf-8
+server:
+  servlet:
+    context-path: '/zhaozhi'
+  port: 8080
+logging:
+  level:
+    org.springframework: error
+    org.apache: error

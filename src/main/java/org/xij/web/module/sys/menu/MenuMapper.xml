@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.menu.MenuMapper">
+    <select id="query" resultType="menu">
+        select ID,NAME,HREF,ICON,TYPE,P_ID,SORT_CODE,STATUS
+        from SYS_MENU where STATUS='0'
+        <if test='id !=null and id != ""'>
+            and id like concat(concat('%',#{id}),'%')
+        </if>
+        <if test='name !=null and name != ""'>
+            and name like concat(concat('%',#{name}),'%')
+        </if>
+        <if test='href !=null and href != ""'>
+            and href like concat(concat('%',#{href}),'%')
+        </if>
+        ORDER BY SORT_CODE
+    </select>
+
+    <insert id="insert">
+        INSERT INTO SYS_MENU(ID, NAME, HREF, ICON, TYPE, P_ID, SORT_CODE)
+        VALUES (#{id}, #{name}, #{href}, #{icon}, #{type}, #{pId}, #{sortCode})
+    </insert>
+
+
+    <update id="delete">
+        update SYS_MENU
+        set STATUS = '1'
+        where ID = #{id}
+           or P_ID = #{id}
+    </update>
+
+    <update id="update">
+        UPDATE SYS_MENU
+        SET NAME      = #{name},
+            HREF      = #{href},
+            ICON      = #{icon},
+            TYPE      = #{type},
+            P_ID      = #{pId},
+            SORT_CODE = #{sortCode}
+        WHERE ID = #{id}
+    </update>
+
+    <select id="queryById" resultType="menu">
+        select *
+        from SYS_MENU
+        where ID = #{id}
+    </select>
+
+    <select id="queryChildren" resultType="menu">
+        select ID, NAME, HREF, ICON, TYPE, P_ID, SORT_CODE
+        from SYS_MENU
+        where STATUS = '0'
+        <choose>
+            <when test='"" != pId and null != pId'>
+                AND p_ID = #{pId}
+            </when>
+            <otherwise>
+                AND exists(select 1 from SYS_APPLICATION a where a.ID = P_ID)
+            </otherwise>
+        </choose>
+        ORDER BY SORT_CODE
+    </select>
+</mapper>

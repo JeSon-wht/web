@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title></title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<script type="text/javascript">
+    var ctx = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1),
+        plugins = ctx + 'plugins/',
+        require = {
+            baseUrl: plugins,
+            deps: ['init'],
+            skipDataMain: true,
+            map: {
+                '*': {
+                    css: 'require/css',
+                    text: 'require/text'
+                }
+            },
+            waitSeconds: 0
+        };
+
+    function pluginJS(path) {
+        return path;
+    }
+
+    function pluginCSS(path) {
+        return 'css!' + path;
+    }
+
+    function pluginText(path) {
+        return 'text!' + path;
+    }
+
+    function isFunction(x) {
+        return 'function' === typeof x;
+    }
+
+    function isObject(x) {
+        return 'object' === typeof x;
+    }
+
+    function isArray(x) {
+        return toString.call(x) === '[object Array]';
+    }
+
+    function isString(x) {
+        return toString.call(x) === '[object String]';
+    }
+
+    function isUndef(x) {
+        return 'undefined' === typeof x;
+    }
+
+    (function () {
+        var node = document.createElement('script');
+        node.type = 'text/javascript';
+        node.src = plugins + 'require/require.js';
+        document.head.appendChild(node);
+    }());
+</script>
+</body>
+</html>

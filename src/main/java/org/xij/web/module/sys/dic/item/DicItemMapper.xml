@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.dic.item.DicItemMapper">
+    <select id="queryDic" resultType="dicItem">
+        select CODE, LABEL
+        from SYS_DIC
+        where TYPE = '${type}'
+        <if test='filter != null and filter != ""'>
+            and FILTER = #{filter}
+        </if>
+        and STATUS = '0'
+        order by SORT_CODE
+    </select>
+</mapper>

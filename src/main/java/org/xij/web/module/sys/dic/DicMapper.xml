@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.dic.DicMapper">
+    <select id="queryDic" resultType="dicItem">
+        select CODE, LABEL
+        from SYS_DIC
+        where TYPE = '${type}'
+        <if test='filter != null and filter != ""'>
+            and FILTER = #{filter}
+        </if>
+        and STATUS = '0'
+        order by SORT_CODE
+    </select>
+
+    <!--<select id="queryChildren" resultType="dicItem">
+        select ID, CODE, LABEL, P_ID
+        from SYS_DIC
+        where P_ID = '${pId}'
+            and STATUS = '0'
+        order by SORT_CODE
+    </select>-->
+
+    <select id="queryChildren" resultType="dic">
+        SELECT ID,
+               TYPE,
+               CODE,
+               LABEL,
+               P_ID,
+               FILTER,
+               EXT,
+               SORT_CODE AS sortCode,
+               STATUS,
+               UPDATE_TIME,
+               REMARK
+        FROM SYS_DIC
+        WHERE STATUS = '0' and P_ID = #{pId}
+        ORDER BY TYPE asc, sortCode asc
+    </select>
+
+    <insert id="insert">
+        INSERT INTO SYS_DIC (ID, TYPE, CODE, LABEL, P_ID, FILTER, EXT, SORT_CODE, REMARK)
+        VALUES (#{id}, #{type}, #{code}, #{label}, #{pId}, #{filter}, #{ext}, #{sortCode}, #{remark})
+    </insert>
+
+    <select id="query" resultType="dic">
+        SELECT
+        ID,
+        TYPE,
+        CODE,
+        LABEL,
+        P_ID,
+        FILTER,
+        EXT,
+        SORT_CODE AS sortCode,
+        STATUS,
+        UPDATE_TIME,
+        REMARK
+        FROM SYS_DIC
+        WHERE STATUS = '0'
+        <if test='label != null and label != ""'>
+            AND LABEL LIKE concat(concat('%',#{label}),'%')
+        </if>
+        <if test='type != null and type != ""'>
+            AND TYPE LIKE concat(concat('%',#{type}),'%')
+        </if>
+        <if test='filter != null and filter != ""'>
+            AND filter LIKE concat(concat('%',#{filter}),'%')
+        </if>
+        <if test='status != null and status != ""'>
+            AND STATUS LIKE concat(concat('%',#{status}),'%')
+        </if>
+        ORDER BY TYPE asc,sortCode asc
+    </select>
+
+    <update id="delete">
+        UPDATE SYS_DIC
+        SET STATUS='1'
+        WHERE ID = #{id}
+          and STATUS = '0'
+    </update>
+
+    <select id="queryById" resultType="dic">
+        SELECT ID,
+               TYPE,
+               CODE,
+               LABEL,
+               P_ID,
+               SORT_CODE AS sortCode,
+               FILTER,
+               EXT,
+               REMARK
+        FROM SYS_DIC
+        WHERE ID = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE SYS_DIC
+        SET
+        <if test='type != null and type != ""'>
+            TYPE=#{type},
+        </if>
+        <if test='code != null and code != ""'>
+            CODE=#{code},
+        </if>
+        <if test='label != null and label != ""'>
+            LABEL=#{label},
+        </if>
+        P_ID=#{pId},
+        SORT_CODE=#{sortCode},
+        FILTER=#{filter},
+        EXT=#{ext},
+        REMARK=#{remark}
+        WHERE ID = #{id}
+    </update>
+
+</mapper>

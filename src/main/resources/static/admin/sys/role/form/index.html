@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <div class="row" style="height: 20px;">
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{#if id}}修改{{else}}新增{{/if}}角色信息
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">角色名称<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="请输入角色名称"
+                                       data-error="不能出现特殊字符" data-pattern="^[a-zA-Z0-9\u4E00-\u9FA5]+$" required
+                                       value="{{name}}">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="classify" class="col-sm-2 control-label">分类<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="classify" class="form-control" id="classify" placeholder="请输入分类,1代表角色,2代表部门"
+                                       data-error="只能输入1或2" data-pattern="[1|2]{1}" required
+                                       value="{{classify}}">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="remark" class="form-control" id="remark" value="{{remark}}"
+                                       placeholder="请输入需要备注的信息">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success">{{#if id}}更新{{else}}保存{{/if}}</button>
+                                <button class="btn btn-warning" data-event="click goBack">返回</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

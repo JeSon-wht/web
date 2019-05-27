@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row" style="height: 20px;">
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{#if id}}修改{{else}}新增{{/if}}字典数据
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="type" class="col-sm-2 control-label">字典类型<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="type" class="form-control" id="type"
+                                       data-error="必须为英文或者加_,且长度不能超过32" data-pattern="[a-zA-Z_]{1,32}"
+                                       value="{{type}}"
+                                       placeholder="请输入字典类型"
+                                       required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="col-sm-2 control-label">字典代码<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="code" class="form-control" id="code"
+                                       value="{{code}}"
+                                       placeholder="请输入字典代码"
+                                       required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="label" class="col-sm-2 control-label">字典标签<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="label" value="{{label}}"
+                                       name="label" placeholder="请输入字典标签">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pId" class="col-sm-2 control-label">上级编号</label>
+                            <div class="col-sm-10">
+                                {{#if id}}
+                                <input type="text" class="form-control" id="pId" placeholder="请输入上级编号"
+                                       name="pId" value="{{pId}}">
+                                {{else if pLabel}}
+                                {{pLabel}}
+                                <input type="hidden" class="form-control" id="pId2"
+                                       name="pId" value="{{pId}}" readonly="readonly">
+                                {{else}}
+                                <span>顶级字典</span>
+                                <input type="hidden" class="form-control" id="pId1"
+                                       name="pId" value="0" readonly>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sort" class="col-sm-2 control-label">排序</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="sortCode" class="form-control" id="sort"
+                                       data-error="只能为数字且长度不能超过10" data-pattern="[0-9]{1,10}" required
+                                       value="99">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter" class="col-sm-2 control-label">过滤器</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="filter" class="form-control" id="filter"
+                                       placeholder="请输入需要过滤信息">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ext" class="col-sm-2 control-label">扩展信息</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="ext" class="form-control" id="ext" placeholder="请输入需要扩展的信息">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="remark" class="form-control" id="remark" placeholder="请输入备注信息">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success">{{#if id}}更新{{else}}保存{{/if}}</button>
+                                <button class="btn btn-warning" data-event="click goBack">返回</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

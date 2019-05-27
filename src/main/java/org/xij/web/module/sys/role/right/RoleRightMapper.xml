@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.role.right.RoleRightMapper">
+    <select id="query" resultType="right">
+        SELECT r.ID, decode(r.TYPE,'menu',m.HREF,r.NAME) NAME, r.TYPE, decode(r.TYPE,'menu',m.NAME,r.REMARK) REMARK, r.STATUS
+        FROM SYS_RIGHT r
+        LEFT JOIN SYS_MENU m on r.NAME = m.ID
+        WHERE
+        <if test='own == "0"'>not</if>
+        exists(
+        SELECT 1
+        FROM SYS_ROLE_RIGHT ur
+        WHERE r.ID = ur.RIGHT_ID
+        AND ur.ROLE_ID = #{roleId}
+        and ur.STATUS = '0'
+        )
+        AND r.STATUS = '0'
+        <if test='name != null and name != ""'>
+            AND (r.NAME like concat(concat('%',#{name}),'%') or m.href LIKE concat(concat('%',#{name}),'%'))
+        </if>
+        <if test='type != null and type != ""'>
+            AND r.TYPE like concat(concat('%',#{type}),'%')
+        </if>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO SYS_ROLE_RIGHT(ROLE_ID, RIGHT_ID)
+        <foreach collection="rightIds" item="t" separator=" UNION ALL ">
+            SELECT #{roleId}, #{t} FROM DUAL
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        delete
+        from SYS_ROLE_RIGHT
+        where RIGHT_ID IN(
+        <foreach collection="rightIds" item="t" separator=",">
+            #{t}
+        </foreach>
+        )and ROLE_ID = #{roleId}
+    </delete>
+
+</mapper>

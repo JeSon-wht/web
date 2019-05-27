@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xij.web.module.sys.dept.DeptMapper">
+    <insert id="insert">
+        INSERT INTO SYS_DEPT (ID, CODE, NAME, P_ID, EXT, SORT_CODE, REMARK, CREATE_BY, CREATE_DEPT, DOC_NUM, DOC_SEQ)
+        values (#{id}, #{code}, #{name}, #{pId}, #{ext}, #{sortCode}, #{remark}, #{createBy}, #{createDept}, #{docNum},
+                #{docSeq})
+    </insert>
+
+    <select id="query" resultType="dept">
+        select ID, CODE, NAME, P_ID, EXT, STATUS, UPDATE_TIME, REMARK,DOC_NUM,DOC_SEQ
+        from SYS_DEPT
+        where status = #{STATUS_NORMAL}
+        <if test='name != null and name != ""'>
+            AND NAME like concat('%', concat(#{name}, '%'))
+        </if>
+        <if test='code != null and code != ""'>
+            AND CODE = #{code}
+        </if>
+    </select>
+
+    <update id="delete">
+        update SYS_DEPT d
+        set d.STATUS      = ${@org.xij.web.module.base.BusinessEntity@STATUS_DELETED},
+            d.UPDATE_BY   = #{updateBy},
+            d.UPDATE_DEPT = #{updateDept},
+            d.UPDATE_TIME = #{updateTime}
+        where d.ID = #{id}
+          and d.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
+          and exists(select 1
+                     from SYS_DEPT t
+                     where t.P_ID = '${@org.xij.web.core.AuthContext@get().rightDeptId}'
+                     start with t.ID = d.ID
+                     connect by t.ID = prior t.P_ID)
+    </update>
+
+    <select id="queryById" resultType="dept">
+        SELECT ID,
+               CODE,
+               NAME,
+               P_ID,
+               EXT,
+               SORT_CODE,
+               REMARK,
+               DOC_NUM,
+               DOC_SEQ
+        FROM SYS_DEPT
+        WHERE ID = #{id}
+          and STATUS = '0'
+    </select>
+
+    <update id="update">
+        UPDATE SYS_DEPT d
+        SET d.NAME        = #{name},
+            d.EXT         = #{ext},
+            d.SORT_CODE   = #{sortCode},
+            d.REMARK      = #{remark},
+            d.UPDATE_BY   = #{updateBy},
+            d.UPDATE_DEPT = #{updateDept},
+            d.UPDATE_TIME = #{updateTime},
+            d.DOC_NUM     = #{docNum},
+            d.DOC_SEQ     = #{docSeq}
+        WHERE d.ID = #{id}
+          and d.STATUS = #{STATUS_NORMAL}
+          and exists(select 1
+                     from SYS_DEPT t
+                     where t.P_ID = '${@org.xij.web.core.AuthContext@get().rightDeptId}'
+                     start with t.ID = d.ID
+                     connect by prior t.P_ID = t.ID)
+    </update>
+
+    <select id="queryChildren" resultType="dept">
+        SELECT ID,
+               CODE,
+               NAME,
+               EXT,
+               SORT_CODE,
+               REMARK,
+               DOC_NUM,
+               DOC_SEQ
+        FROM SYS_DEPT
+        where STATUS = #{STATUS_NORMAL}
+          and P_ID = #{pId}
+        order by SORT_CODE
+    </select>
+
+    <update id="updateDocSeq">
+        UPDATE SYS_DEPT
+        SET DOC_SEQ = #{docSeq}
+        WHERE ID = #{deptId}
+    </update>
+</mapper>

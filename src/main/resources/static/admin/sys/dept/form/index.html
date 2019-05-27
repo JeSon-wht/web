@@ -1,0 +1,72 @@
+<div class="container-fluid">
+    <div class="row" style="height: 20px;">
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{#if id}}修改{{else}}新增{{/if}}部门
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="code" class="col-sm-2 control-label">部门代码</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="code" id="code" value="{{code}}"
+                                       placeholder="请输入部门代码"
+                                       data-error="必须为数字或者英文,且长度不能超过12" data-pattern="[a-zA-Z0-9]{1,12}"
+                                       {{#if id}} readonly {{/if}} required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">部门名称<span
+                                    style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" id="name" class="form-control" value="{{name}}"
+                                       placeholder="请输入部门名称"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pId" class="col-sm-2 control-label">上级部门</label>
+                            <div class="col-sm-10">
+                                <span type="text" class="form-control" id="pId">{{pId}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-sm-2 control-label">备注信息</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="remark"
+                                       name="remark" value="{{remark}}" placeholder="备注信息">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortCode" class="col-sm-2 control-label">排序</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="sortCode"
+                                       name="sortCode" value="{{sortCode}}"
+                                       placeholder="排序码"
+                                       data-error="只能为数字且长度不能超过10" data-pattern="[0-9]{1,10}" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">扩展</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="ext" class="form-control" placeholder="扩展"
+                                       value="{{ext}}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success">{{#if id}}更新{{else}}保存{{/if}}</button>
+                                <button class="btn btn-warning" data-event="click goBack">返回</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

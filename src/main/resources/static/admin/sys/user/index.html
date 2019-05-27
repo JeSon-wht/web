@@ -1,0 +1,71 @@
+<div class="container-fluid">
+    <div class="row" style="height: 20px;"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    用户信息
+                    <div class="pull-right" style="margin-top: -15px">
+                        <button class="btn btn-default btn-sm navbar-btn" type="button" data-toggle="collapse" data-target="#query"
+                                aria-expanded="false" aria-controls="query">
+                       <span class="glyphicon glyphicon-search"
+                             aria-hidden="true"></span>查询
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm navbar-btn" title="新增用户" data-event="click goForm">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="collapse" id="query" style="margin-top: 10px">
+                        <form class="well form-inline" id="userSearchForm">
+                            <div class="form-group">
+                                <label for="account">账号：</label>
+                                <input type="text" name="account" class="form-control" id="account"
+                                       style="width: 100px">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">姓名：</label>
+                                <input type="email" name="name" class="form-control" id="name"
+                                       style="width: 100px">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">邮箱：</label>
+                                <input type="email" name="email" class="form-control" id="email" style="width: 100px">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">电话：</label>
+                                <input type="email" name="phone" class="form-control" id="phone" style="width: 100px">
+                            </div>
+                            <div class="form-group">
+                                <label for="sex" class="control-label">性别</label>
+                                <select name="sex" class="form-control" id="sex">
+                                    <option value="" selected>所有</option>
+                                    {{#each SEX}}
+                                    <option value="{{code}}">{{label}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-info" data-event="click search">查询</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="reset" class="btn btn-default">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table id="userGrid" rel="userSearchForm"></table>
+                            <div id="userGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
