@@ -10,6 +10,8 @@ import org.xij.web.core.AuthInfo;
 import org.xij.web.module.base.BusinessEntity;
 import org.xij.web.module.base.ServiceImpl;
 
+import java.util.Date;
+
 @Service
 public class UserServiceImpl extends ServiceImpl<User, UserMapper> implements UserService {
     public UserServiceImpl(UserMapper mapper) {
@@ -20,10 +22,8 @@ public class UserServiceImpl extends ServiceImpl<User, UserMapper> implements Us
 
     @Override
     public Integer resetPassword(String id, String password) {
-        if (password == null) {
-            password = Id.generateId();
-        }
-        return mapper.resetPassword(id, password);
+        AuthInfo authInfo = AuthContext.get();
+        return mapper.resetPassword(id, password,authInfo.getUserId(),authInfo.getDeptId(),new Date());
     }
 
     @Override
@@ -32,7 +32,8 @@ public class UserServiceImpl extends ServiceImpl<User, UserMapper> implements Us
         if (!oldPassword.equals(user.getPassword())) {
             throw new RuntimeException("原密码不正确");
         }
-        return mapper.resetPassword(id, newPassword);
+        AuthInfo authInfo = AuthContext.get();
+        return mapper.resetPassword(id, newPassword,authInfo.getUserId(),authInfo.getDeptId(),new Date());
     }
 
     @Override

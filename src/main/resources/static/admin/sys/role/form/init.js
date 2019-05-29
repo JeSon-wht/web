@@ -21,9 +21,7 @@
                     if (me.id) {
                         formData.id = me.id;
                         url += 'update';
-                        if(data.name === formData.name){
-                            formData.name = '';
-                        }
+
                     } else {
                         url += 'save';
                     }

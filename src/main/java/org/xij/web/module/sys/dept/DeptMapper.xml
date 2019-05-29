@@ -46,7 +46,7 @@
                DOC_SEQ
         FROM SYS_DEPT
         WHERE ID = #{id}
-          and STATUS = '0'
+          and STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
     </select>
 
     <update id="update">
@@ -86,7 +86,10 @@
 
     <update id="updateDocSeq">
         UPDATE SYS_DEPT
-        SET DOC_SEQ = #{docSeq}
+        SET DOC_SEQ = #{docSeq},
+        UPDATE_BY   = #{updateBy},
+        UPDATE_DEPT = #{updateDept},
+        UPDATE_TIME = #{updateTime}
         WHERE ID = #{deptId}
     </update>
 </mapper>

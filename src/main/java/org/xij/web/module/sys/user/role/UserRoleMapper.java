@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserRoleMapper {
     List<Role> query(@Param("userId") String userId, @Param("own") String own, @Param("name") String name);
 
-    Integer insert(@Param("userId") String userId, @Param("roleIds") List<String> roleIds);
+    Integer insert(@Param("userId") String userId, @Param("roleIds") List<String> roleIds, @Param("createBy") String createBy, @Param("createDept") String createDept);
 
     Integer delete(@Param("userId") String userId, @Param("roleIds") List<String> roleIds);
 }

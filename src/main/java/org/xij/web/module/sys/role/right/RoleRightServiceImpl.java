@@ -1,6 +1,8 @@
 package org.xij.web.module.sys.role.right;
 
 import org.springframework.stereotype.Service;
+import org.xij.web.core.AuthContext;
+import org.xij.web.core.AuthInfo;
 import org.xij.web.module.sys.menu.MenuMapper;
 import org.xij.web.module.sys.right.Right;
 
@@ -23,7 +25,8 @@ public class RoleRightServiceImpl implements RoleRightService {
 
     @Override
     public Integer grant(String roleId, List<String> rightIds) {
-        return mapper.insert(roleId, rightIds);
+        AuthInfo authInfo = AuthContext.get();
+        return mapper.insert(roleId, rightIds, authInfo.getUserId(), authInfo.getDeptId());
     }
 
     @Override

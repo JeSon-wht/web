@@ -54,12 +54,6 @@
                                 icon: 'glyphicon glyphicon-remove-sign'
                             },
                             {
-                                class: 'btn-primary',
-                                title: '添加权限',
-                                func: 'addRight',
-                                icon: 'glyphicon glyphicon-plus'
-                            },
-                            {
                                 class: 'btn-success',
                                 title: '分配角色',
                                 func: 'addRole',
@@ -127,16 +121,6 @@
                         }
                     });
                 })
-            },
-
-            addRight: function (e, elem, data) {
-                var me = this;
-                Base.showModule(moduleName + 'right', {
-                    data: {
-                        userId: data.id
-                    },
-                    ctn: me.ctn
-                });
             },
 
             addRole: function (e, elem, data) {

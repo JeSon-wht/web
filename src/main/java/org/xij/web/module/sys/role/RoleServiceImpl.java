@@ -16,9 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements RoleService{
+public class RoleServiceImpl extends ServiceImpl<Role, RoleMapper> implements RoleService {
     private static final StringManager MANAGER = StringManager.getManager(ServiceImpl.class);
-    public RoleServiceImpl(RoleMapper mapper){
+
+    public RoleServiceImpl(RoleMapper mapper) {
         super(mapper);
     }
 
@@ -35,9 +36,9 @@ public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements Rol
     @Override
     public Role findRoleById(String id) {
         Role role = mapper.findRoleById(id);
-        if(role == null){
+        if (role == null) {
             throw new RuntimeException("未找到该角色信息，可能已经被修改或者已经被删除");
-        }else{
+        } else {
             return role;
         }
     }
@@ -59,12 +60,12 @@ public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements Rol
 
     @Override
     public void addRoleRight(String roleId, String[] rightIds) {
-        mapper.addRoleRight(roleId,rightIds);
+        mapper.addRoleRight(roleId, rightIds);
     }
 
     @Override
     public void cancelRight(String roleId, String[] rightId) {
-        mapper.cancelRight(roleId,rightId);
+        mapper.cancelRight(roleId, rightId);
     }
 
     @Override
@@ -79,18 +80,18 @@ public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements Rol
 
     @Override
     public void addRoleUser(String roleId, String[] userIds) {
-        mapper.addRoleUser(roleId,userIds);
+        mapper.addRoleUser(roleId, userIds);
     }
 
     @Override
     public void cancelUser(String roleId, String[] userIds) {
-        mapper.cancelUser(roleId,userIds);
+        mapper.cancelUser(roleId, userIds);
     }
 
     @Override
     @Transactional
     public Integer save(Role role) {
-        Integer row = mapper.checkRepeat(role.getName());
+        Integer row = mapper.checkRepeat(role.getId(), role.getName());
         if (row > 0) {
             throw new RuntimeException("该角色名称已存在!");
         }
@@ -101,7 +102,7 @@ public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements Rol
 
         role.setId(Id.generateId());
         if (role instanceof BusinessEntity) {
-            BusinessEntity entity = (BusinessEntity)role;
+            BusinessEntity entity = (BusinessEntity) role;
             AuthInfo authInfo = AuthContext.get();
             entity.setCreateBy(authInfo.getUserId());
             entity.setCreateDept(authInfo.getDeptId());
@@ -113,15 +114,15 @@ public class RoleServiceImpl extends ServiceImpl<Role,RoleMapper> implements Rol
     @Override
     @Transactional
     public Integer update(Role role) {
-        if (!role.getName().equals("")){
-            Integer row = mapper.checkRepeat(role.getName());
+        if (!role.getName().equals("")) {
+            Integer row = mapper.checkRepeat(role.getId(), role.getName());
             if (row > 0) {
                 throw new RuntimeException("该角色名称已存在!");
             }
         }
 
         if (role instanceof BusinessEntity) {
-            BusinessEntity entity = (BusinessEntity)role;
+            BusinessEntity entity = (BusinessEntity) role;
             AuthInfo authInfo = AuthContext.get();
             entity.setUpdateBy(authInfo.getUserId());
             entity.setUpdateDept(authInfo.getDeptId());

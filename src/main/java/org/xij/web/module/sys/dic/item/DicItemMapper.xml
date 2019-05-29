@@ -8,7 +8,7 @@
         <if test='filter != null and filter != ""'>
             and FILTER = #{filter}
         </if>
-        and STATUS = '0'
+        and STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         order by SORT_CODE
     </select>
 </mapper>

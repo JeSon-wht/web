@@ -11,9 +11,9 @@
         FROM SYS_USER_ROLE UR
         WHERE U.ID = UR.USER_ID
         AND UR.ROLE_ID = #{roleId}
-        and UR.STATUS = '0'
+        and UR.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         )
-        AND STATUS = '0'
+        AND STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='account != null and account != ""'>
             AND ACCOUNT LIKE CONCAT(CONCAT('%',#{account}),'%')
         </if>
@@ -23,9 +23,9 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO SYS_USER_ROLE(USER_ID, ROLE_ID)
+        INSERT INTO SYS_USER_ROLE(USER_ID, ROLE_ID, CREATE_BY, CREATE_DEPT)
         <foreach collection="userIds" item="userId" separator=" UNION ALL ">
-            SELECT #{userId}, #{roleId} FROM DUAL
+            SELECT #{userId}, #{roleId}, #{createBy}, #{createDept} FROM DUAL
         </foreach>
     </insert>
 

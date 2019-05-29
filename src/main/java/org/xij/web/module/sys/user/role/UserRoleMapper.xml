@@ -11,18 +11,18 @@
         FROM SYS_USER_ROLE UR
         WHERE R.ID = UR.ROLE_ID
         AND UR.USER_ID = #{userId}
-        and UR.STATUS = '0'
+        and UR.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         )
-        AND STATUS = '0'
+        AND STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='name != null and name != ""'>
             and name like concat(concat('%',#{name}),'%')
         </if>
     </select>
 
     <insert id="insert">
-        INSERT INTO SYS_USER_ROLE(USER_ID, ROLE_ID)
+        INSERT INTO SYS_USER_ROLE(USER_ID, ROLE_ID, CREATE_BY, CREATE_DEPT)
         <foreach collection="roleIds" item="t" separator=" UNION ALL ">
-            SELECT #{userId}, #{t} FROM DUAL
+            SELECT #{userId}, #{t}, #{createBy}, #{createDept} FROM DUAL
         </foreach>
     </insert>
 

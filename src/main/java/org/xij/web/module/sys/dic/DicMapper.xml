@@ -8,17 +8,9 @@
         <if test='filter != null and filter != ""'>
             and FILTER = #{filter}
         </if>
-        and STATUS = '0'
+        and STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         order by SORT_CODE
     </select>
-
-    <!--<select id="queryChildren" resultType="dicItem">
-        select ID, CODE, LABEL, P_ID
-        from SYS_DIC
-        where P_ID = '${pId}'
-            and STATUS = '0'
-        order by SORT_CODE
-    </select>-->
 
     <select id="queryChildren" resultType="dic">
         SELECT ID,
@@ -33,13 +25,14 @@
                UPDATE_TIME,
                REMARK
         FROM SYS_DIC
-        WHERE STATUS = '0' and P_ID = #{pId}
+        WHERE STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
+        and P_ID = #{pId}
         ORDER BY TYPE asc, sortCode asc
     </select>
 
     <insert id="insert">
-        INSERT INTO SYS_DIC (ID, TYPE, CODE, LABEL, P_ID, FILTER, EXT, SORT_CODE, REMARK)
-        VALUES (#{id}, #{type}, #{code}, #{label}, #{pId}, #{filter}, #{ext}, #{sortCode}, #{remark})
+        INSERT INTO SYS_DIC (ID, TYPE, CODE, LABEL, P_ID, FILTER, EXT, SORT_CODE, CREATE_BY, CREATE_DEPT, REMARK)
+        VALUES (#{id}, #{type}, #{code}, #{label}, #{pId}, #{filter}, #{ext}, #{sortCode}, #{createBy}, #{createDept}, #{remark})
     </insert>
 
     <select id="query" resultType="dic">
@@ -56,7 +49,7 @@
         UPDATE_TIME,
         REMARK
         FROM SYS_DIC
-        WHERE STATUS = '0'
+        WHERE STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='label != null and label != ""'>
             AND LABEL LIKE concat(concat('%',#{label}),'%')
         </if>
@@ -74,9 +67,12 @@
 
     <update id="delete">
         UPDATE SYS_DIC
-        SET STATUS='1'
+        SET STATUS      = ${@org.xij.web.module.base.BusinessEntity@STATUS_DELETED},
+            UPDATE_BY   = #{updateBy},
+            UPDATE_DEPT = #{updateDept},
+            UPDATE_TIME = #{updateTime}
         WHERE ID = #{id}
-          and STATUS = '0'
+        and STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
     </update>
 
     <select id="queryById" resultType="dic">
@@ -109,6 +105,9 @@
         SORT_CODE=#{sortCode},
         FILTER=#{filter},
         EXT=#{ext},
+        UPDATE_BY   = #{updateBy},
+        UPDATE_DEPT = #{updateDept},
+        UPDATE_TIME = #{updateTime},
         REMARK=#{remark}
         WHERE ID = #{id}
     </update>

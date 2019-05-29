@@ -3,7 +3,7 @@
 <mapper namespace="org.xij.web.module.sys.menu.MenuMapper">
     <select id="query" resultType="menu">
         select ID,NAME,HREF,ICON,TYPE,P_ID,SORT_CODE,STATUS
-        from SYS_MENU where STATUS='0'
+        from SYS_MENU where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='id !=null and id != ""'>
             and id like concat(concat('%',#{id}),'%')
         </if>
@@ -17,14 +17,17 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO SYS_MENU(ID, NAME, HREF, ICON, TYPE, P_ID, SORT_CODE)
-        VALUES (#{id}, #{name}, #{href}, #{icon}, #{type}, #{pId}, #{sortCode})
+        INSERT INTO SYS_MENU(ID, NAME, HREF, ICON, TYPE, P_ID, SORT_CODE, CREATE_BY, CREATE_DEPT)
+        VALUES (#{id}, #{name}, #{href}, #{icon}, #{type}, #{pId}, #{sortCode}, #{createBy}, #{createDept})
     </insert>
 
 
     <update id="delete">
         update SYS_MENU
-        set STATUS = '1'
+        set STATUS  = ${@org.xij.web.module.base.BusinessEntity@STATUS_DELETED},
+        UPDATE_BY   = #{updateBy},
+        UPDATE_DEPT = #{updateDept},
+        UPDATE_TIME = #{updateTime}
         where ID = #{id}
            or P_ID = #{id}
     </update>
@@ -36,7 +39,10 @@
             ICON      = #{icon},
             TYPE      = #{type},
             P_ID      = #{pId},
-            SORT_CODE = #{sortCode}
+            SORT_CODE = #{sortCode},
+            UPDATE_BY   = #{updateBy},
+            UPDATE_DEPT = #{updateDept},
+            UPDATE_TIME = #{updateTime}
         WHERE ID = #{id}
     </update>
 
@@ -49,7 +55,7 @@
     <select id="queryChildren" resultType="menu">
         select ID, NAME, HREF, ICON, TYPE, P_ID, SORT_CODE
         from SYS_MENU
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <choose>
             <when test='"" != pId and null != pId'>
                 AND p_ID = #{pId}

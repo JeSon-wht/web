@@ -12,7 +12,7 @@
                         then 'true'
                     else 'false' end) parent
         from SYS_DIC d
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
           and P_ID = #{pId}
         order by SORT_CODE
     </select>
@@ -28,7 +28,7 @@
                         then 'true'
                     else 'false' end) parent
         from SYS_DIC d
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         start with P_ID = #{pId}
         connect by prior ID = P_ID
         order by SORT_CODE
@@ -46,7 +46,7 @@
                         then 'true'
                     else 'false' end) parent
         from SYS_MENU m
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
           and type != '0'
           and P_ID = #{pId}
         order by SORT_CODE
@@ -64,7 +64,7 @@
         then 'true'
         else 'false' end) parent
         from SYS_MENU m
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         and type != '0'
         and (exists(
         select 1
@@ -107,7 +107,7 @@
                         then 'true'
                     else 'false' end) parent
         from SYS_DEPT d
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
           and P_ID = #{pId}
         order by SORT_CODE
     </select>
@@ -123,7 +123,7 @@
                         then 'true'
                     else 'false' end) parent
         from SYS_DEPT d
-        where STATUS = '0'
+        where STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         start with P_ID = #{pId}
         connect by prior ID = P_ID
         order by SORT_CODE

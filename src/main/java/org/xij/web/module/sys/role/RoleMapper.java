@@ -98,5 +98,5 @@ public interface RoleMapper extends Mapper<Role> {
      */
     Integer cancelUser(@Param("roleId") String roleId, @Param("userIds") String[] userIds);
 
-    Integer checkRepeat(String name);
+    Integer checkRepeat(@Param("id") String id, @Param("name") String name);
 }

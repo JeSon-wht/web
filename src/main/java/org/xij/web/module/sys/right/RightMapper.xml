@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.xij.web.module.sys.right.RightMapper">
     <insert id="insert">
-        INSERT INTO SYS_RIGHT(ID, NAME, TYPE, REMARK)
-        VALUES (#{id}, #{name}, #{type}, #{remark})
+        INSERT INTO SYS_RIGHT(ID, NAME, TYPE, CREATE_BY, CREATE_DEPT, REMARK)
+        VALUES (#{id}, #{name}, #{type}, #{createBy}, #{createDept}, #{remark})
     </insert>
 
     <select id="query" resultType="right">
         SELECT r.ID, decode(r.TYPE,'menu',m.HREF,r.NAME) NAME, r.TYPE, decode(r.TYPE,'menu',m.NAME,r.REMARK) REMARK, r.STATUS
         FROM SYS_RIGHT r
         LEFT JOIN SYS_MENU m on r.NAME = m.ID
-        WHERE r.STATUS='0'
+        WHERE r.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='type != null and type != ""'>
             AND r.TYPE LIKE concat(concat('%',#{type}),'%')
         </if>
@@ -21,9 +21,12 @@
 
     <update id="delete">
         UPDATE SYS_RIGHT
-        SET STATUS='1'
+        SET STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_DELETED},
+        UPDATE_BY   = #{updateBy},
+        UPDATE_DEPT = #{updateDept},
+        UPDATE_TIME = #{updateTime}
         WHERE ID = #{id}
-          and STATUS = '0'
+          and STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
     </update>
 
     <select id="queryById" resultType="right">
@@ -36,6 +39,9 @@
         UPDATE SYS_RIGHT SET
         NAME=#{name},
         TYPE=#{type},
+        UPDATE_BY   = #{updateBy},
+        UPDATE_DEPT = #{updateDept},
+        UPDATE_TIME = #{updateTime},
         REMARK=#{remark}
         WHERE ID = #{id}
     </update>

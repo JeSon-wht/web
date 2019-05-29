@@ -1,6 +1,8 @@
 package org.xij.web.module.sys.role.user;
 
 import org.springframework.stereotype.Service;
+import org.xij.web.core.AuthContext;
+import org.xij.web.core.AuthInfo;
 import org.xij.web.module.sys.right.Right;
 
 import java.util.List;
@@ -20,7 +22,8 @@ public class RoleUserServiceImpl implements RoleUserService {
 
     @Override
     public Integer grant(String roleId, List<String> userIds) {
-        return mapper.insert(roleId, userIds);
+        AuthInfo authInfo = AuthContext.get();
+        return mapper.insert(roleId, userIds,authInfo.getUserId(),authInfo.getDeptId());
     }
 
     @Override

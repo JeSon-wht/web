@@ -12,9 +12,9 @@
         FROM SYS_ROLE_RIGHT ur
         WHERE r.ID = ur.RIGHT_ID
         AND ur.ROLE_ID = #{roleId}
-        and ur.STATUS = '0'
+        and ur.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         )
-        AND r.STATUS = '0'
+        AND r.STATUS = ${@org.xij.web.module.base.BusinessEntity@STATUS_NORMAL}
         <if test='name != null and name != ""'>
             AND (r.NAME like concat(concat('%',#{name}),'%') or m.href LIKE concat(concat('%',#{name}),'%'))
         </if>
@@ -24,9 +24,9 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO SYS_ROLE_RIGHT(ROLE_ID, RIGHT_ID)
+        INSERT INTO SYS_ROLE_RIGHT(ROLE_ID, RIGHT_ID, CREATE_BY, CREATE_DEPT)
         <foreach collection="rightIds" item="t" separator=" UNION ALL ">
-            SELECT #{roleId}, #{t} FROM DUAL
+            SELECT #{roleId}, #{t}, #{createBy}, #{createDept} FROM DUAL
         </foreach>
     </insert>
 
