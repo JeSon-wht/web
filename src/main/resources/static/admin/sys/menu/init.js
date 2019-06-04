@@ -52,8 +52,6 @@
                     opts.pName = data.name;
                 }else if(data.id){
                     opts.id = data.id;
-                }else{
-
                 }
                 Base.showModule(moduleName + 'form', opts);
             },

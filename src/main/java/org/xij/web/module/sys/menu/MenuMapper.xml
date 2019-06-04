@@ -38,7 +38,6 @@
             HREF      = #{href},
             ICON      = #{icon},
             TYPE      = #{type},
-            P_ID      = #{pId},
             SORT_CODE = #{sortCode},
             UPDATE_BY   = #{updateBy},
             UPDATE_DEPT = #{updateDept},

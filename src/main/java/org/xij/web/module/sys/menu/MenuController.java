@@ -58,6 +58,13 @@ public class MenuController {
     @RequestMapping(value = "id/{id}", method = RequestMethod.POST)
     public Result queryById(@PathVariable("id") String id) {
         Menu menu = menuService.queryById(id);
+        String pId = menu.getpId();
+        if("tKtVk0hgNOeAABpw".equals(pId)){
+            menu.setpId("一级菜单");
+        }else{
+            Menu upMenu = menuService.queryById(pId);
+            menu.setpId(upMenu.getName());
+        }
         return Result.ok(menu);
     }
 
