@@ -2,6 +2,7 @@ package org.xij.web.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import org.xij.util.Result;
 import org.xij.util.StringManager;
 import org.xij.util.Strings;
 import org.xij.util.Times;
+import org.xij.web.module.base.Entity;
+import org.xij.web.module.base.Mapper;
 import org.xij.web.module.sys.auth.AuthMapper;
 import org.xij.web.module.sys.dept.Dept;
 import org.xij.web.module.sys.dept.DeptMapper;
@@ -24,7 +27,7 @@ import java.util.*;
 
 @Service
 @PropertySource("classpath:config.properties")
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService{
     private static final StringManager MANAGER = StringManager.getManager(AuthServiceImpl.class);
     private final Logger LOG = LoggerFactory.getLogger(AuthServiceImpl.class);
     private AuthMapper mapper;
@@ -147,7 +150,6 @@ public class AuthServiceImpl implements AuthService {
         public String getRightDeptCode() {
             if (null == rightDeptCode) {
                 String code = getDept().getCode();
-
                 for (String classify : getRoles().values()) {
                     if ("9901".equals(classify)) { // 省厅
                         rightDeptCode = code.substring(0, 2);
